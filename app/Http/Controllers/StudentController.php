@@ -44,4 +44,10 @@ class StudentController extends Controller
           $students = Student::destroy($request->id);
           return response()->json(['massage' => "data successfully deleted"]);
     }
+
+    public function Getdata(){
+           $data = Student::all();
+           return view('studentdiplay' , compact('data'))->with('success' , 'data sccessfully geted');
+
+    }
 }
