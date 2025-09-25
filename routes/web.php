@@ -23,3 +23,6 @@ Route::get('/getdata' , [StudentController::class,'getdata'])->name('UserDashboa
 Route::get('/admindashboard' , function(){
     return view('admindashboard');
 })->name('admindashboard');
+
+
+Route::post('search' , [StudentController::class,'PostSearch']);

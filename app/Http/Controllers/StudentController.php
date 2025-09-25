@@ -45,9 +45,46 @@ class StudentController extends Controller
           return response()->json(['massage' => "data successfully deleted"]);
     }
 
-    public function Getdata(){
+    public function Getdata(request $request){
            $data = Student::all();
            return view('studentdiplay' , compact('data'))->with('success' , 'data sccessfully geted');
+
+    }
+
+    public function PostSearch(request $request){
+        // $name = $request->search;
+        //  $data = Student::where('name' , 'like' , '%'.$name.'%')->get();
+
+        //  return view('studentdiplay' , compact('data'));
+
+        $query = Student::query();
+
+        // 🔍 Search by name (partial match)
+        if ($request->filled('name')) {
+            $query->where('name', 'like', '%' . $request->name . '%');
+        }
+
+        // 🎓 Filter by department
+        if ($request->filled('department')) {
+            $query->where('department', $request->department);
+        }
+
+        // 📅 Filter by enrollment year
+        if ($request->filled('enrollment_year')) {
+            $query->where('enrollment_year', $request->enrollment_year);
+        }
+
+        // 📄 Pagination (10 results per page)
+        $data = $query->paginate(0);
+
+        // 🔙 Return JSON for API
+        if ($request->wantsJson()) {
+                return response()->json($data);
+            }
+
+        // 🔙 Or return Blade view
+        // return view('studentdiplay', compact('data'));
+         return view('studentdiplay' , compact('data'));
 
     }
 }
