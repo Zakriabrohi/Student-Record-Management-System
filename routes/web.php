@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\admin\admincontroller;
 use App\Http\Controllers\Authcontroller;
 use App\Http\Controllers\StudentController;
 use Illuminate\Support\Facades\Route;
@@ -21,8 +22,17 @@ Route::get('/getdata' , [StudentController::class,'getdata'])->name('UserDashboa
 
 
 Route::get('/admindashboard' , function(){
-    return view('admindashboard');
-})->name('admindashboard');
+    return view('admin.admindashboard');
+})->name('admin.admindashboard');
 
 
 Route::post('search' , [StudentController::class,'PostSearch']);
+
+
+
+Route::middleware(['auth' , 'is_admin'])->group(function(){
+Route::get('Getstudents' , [admincontroller::class , 'Getstudents']);
+Route::get('delete/{id}' , [admincontroller::class,'delete']);
+Route::get('TotalStudents' , [admincontroller::class,'totalstudents']);
+});
+
